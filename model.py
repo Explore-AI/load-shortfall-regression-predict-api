@@ -59,7 +59,13 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     # ------------------------------------------------------------------------
-
+    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
+    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+    feature_vector_df.Seville_pressure = feature_vector_df.Seville_pressure.str.extract('(\d+)')
+    feature_vector_df.Seville_pressure = pd.to_numeric(feature_vector_df.Seville_pressure)
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(feature_vector_df['Valencia_pressure'].mode()[0])
+    predict_vector = feature_vector_df.drop(['Unnamed: 0' , 'time'], axis = 1)
     return predict_vector
 
 def load_model(path_to_model:str):
