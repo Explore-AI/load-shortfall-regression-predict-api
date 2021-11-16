@@ -122,8 +122,8 @@ def _preprocess_data(data):
 
     # ------------------------------------------------------------------------
 
-    #return predict_vector
-    return standardized_test
+    return predict_vector
+    #return standardized_test
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
