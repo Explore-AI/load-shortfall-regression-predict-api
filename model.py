@@ -58,8 +58,15 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
+    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+    feature_vector_df['Seville_pressure'] = feature_vector_df.Seville_pressure.str.extract('(\d+)')
+    feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df.Seville_pressure)
+
+
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(1000)
+    predict_vector = feature_vector_df.drop(['Unnamed: 0' , 'time'], axis = 1)
 
     return predict_vector
 
@@ -106,5 +113,6 @@ def make_prediction(data, model):
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
     prediction = model.predict(prep_data)
+
     # Format as list for output standardisation.
     return prediction[0].tolist()
