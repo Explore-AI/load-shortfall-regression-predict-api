@@ -59,6 +59,8 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+
+
     df=feature_vector_df.copy()
     dfc=feature_vector_df.copy()
     dfc['Valencia_pressure'] = dfc['Valencia_pressure'].fillna(df.Valencia_pressure.mode()[0])
@@ -80,7 +82,7 @@ def _preprocess_data(data):
     dfc['day']=pd.DatetimeIndex(dfc.time).day
     dfc['hour']=pd.DatetimeIndex(dfc.time).hour
 
-    dfc=dfc.drop('unnamed:0',axis=1)
+    #dfc=dfc.drop('unnamed:0',axis=1)
 
 
     #standardization
