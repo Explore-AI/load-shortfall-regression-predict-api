@@ -80,6 +80,8 @@ def _preprocess_data(data):
     dfc['day']=pd.DatetimeIndex(dfc.time).day
     dfc['hour']=pd.DatetimeIndex(dfc.time).hour
 
+    dfc=dfc.drop('unnamed:0',axis=1)
+
 
     #standardization
     from sklearn.preprocessing import StandardScaler
