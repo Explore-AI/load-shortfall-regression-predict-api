@@ -85,7 +85,7 @@ def _preprocess_data(data):
     from sklearn.preprocessing import StandardScaler
 
     #create standardized data for train and test data
-    standardized_train = dfc.drop(['load_shortfall_3h','time'], axis=1)
+    standardized_train = dfc.drop('time', axis=1)
 
     # create scaler object
     scaler = StandardScaler()
