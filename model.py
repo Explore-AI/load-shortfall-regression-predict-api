@@ -59,11 +59,14 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    df =feature_vector_df
+    df_test =feature_vector_df
 
-
-    df=feature_vector_df.copy()
-    dfc=feature_vector_df.copy()
+    dfc=df.copy()
     dfc['Valencia_pressure'] = dfc['Valencia_pressure'].fillna(df.Valencia_pressure.mode()[0])
+    df_test['Valencia_pressure'] = df_test['Valencia_pressure'].fillna(df.Valencia_pressure.mode()[0])
+
+    
 
     #create dummy variables  for the Seville_pressure and also for the Valencia_wind_deg in the train data
     dfc['Seville_pressure_category']=dfc.Seville_pressure.map({'sp25':25, 'sp23':23, 'sp24':24, 'sp21':21, 'sp16':16, 'sp9':9, 'sp15':15, 'sp19':19, 'sp22':22, 'sp11':11,
@@ -74,6 +77,15 @@ def _preprocess_data(data):
     'level_3':3, 'level_1':1, 'level_2':2})
     dfc=dfc.drop(['Valencia_wind_deg','Seville_pressure'],axis=1)
 
+    #create dummy variables  for the Seville_pressure and also for the Valencia_wind_deg in the test data
+
+    df_test['Seville_pressure_category']=df_test.Seville_pressure.map({'sp25':25, 'sp23':23, 'sp24':24, 'sp21':21, 'sp16':16, 'sp9':9, 'sp15':15, 'sp19':19, 'sp22':22, 'sp11':11,
+    'sp8':8, 'sp4':4, 'sp6':6, 'sp13':13, 'sp17':17, 'sp20':20, 'sp18':18, 'sp14':14, 'sp12':12, 'sp5':5, 'sp10':10,
+    'sp7':7, 'sp3':3, 'sp2':2, 'sp1':1})
+
+    df_test['Valencia_wind_deg_level']=df_test.Valencia_wind_deg.map({'level_5':5, 'level_10':10, 'level_9':9, 'level_8':8, 'level_7':7, 'level_6':6, 'level_4':4,
+     'level_3':3, 'level_1':1, 'level_2':2})
+    df_test=df_test.drop(['Valencia_wind_deg','Seville_pressure'],axis=1)
 
     #convert time object column to datetime column
     dfc['time']=pd.to_datetime(df['time'])
@@ -82,31 +94,36 @@ def _preprocess_data(data):
     dfc['day']=pd.DatetimeIndex(dfc.time).day
     dfc['hour']=pd.DatetimeIndex(dfc.time).hour
 
-    #dfc=dfc.drop('unnamed:0',axis=1)
+    df_test['time']=pd.to_datetime(df_test['time'])
+    df_test['year']=pd.DatetimeIndex(df_test.time).year
+    df_test['month']=pd.DatetimeIndex(df_test.time).month
+    df_test['day']=pd.DatetimeIndex(df_test.time).day
+    df_test['hour']=pd.DatetimeIndex(df_test.time).hour
 
+    
 
     #standardization
     from sklearn.preprocessing import StandardScaler
 
     #create standardized data for train and test data
     standardized_train = dfc.drop('time', axis=1)
+    standardized_test=df_test.drop('time',axis=1)
 
     # create scaler object
     scaler = StandardScaler()
 
     # create scaled version of the predictors (there is no need to scale the response)
+    test_scaled = scaler.fit_transform(standardized_test)
     train_scaled = scaler.fit_transform(standardized_train)
 
     # convert the scaled predictor values into a dataframe
     standardized_train = pd.DataFrame(train_scaled,columns=standardized_train.columns)
-
-
-
+    standardized_test = pd.DataFrame(test_scaled,columns=standardized_test.columns)
 
     # ------------------------------------------------------------------------
 
     #return predict_vector
-    return standardized_train
+    return standardized_test
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
