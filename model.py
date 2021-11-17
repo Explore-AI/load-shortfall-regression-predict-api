@@ -60,23 +60,40 @@ def _preprocess_data(data):
     # ----------- Replace this code with your own preprocessing steps --------
     #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
 
-    predict_vector = feature_vector_df[['Madrid_wind_speed', 'Bilbao_rain_1h', 'Valencia_wind_speed',
-       'Seville_humidity', 'Madrid_humidity', 'Bilbao_clouds_all',
-       'Bilbao_wind_speed', 'Seville_clouds_all', 'Bilbao_wind_deg',
-       'Barcelona_wind_speed', 'Barcelona_wind_deg', 'Madrid_clouds_all',
-       'Seville_wind_speed', 'Barcelona_rain_1h', 'Seville_rain_1h',
-       'Bilbao_snow_3h', 'Barcelona_pressure', 'Seville_rain_3h',
-       'Madrid_rain_1h', 'Barcelona_rain_3h', 'Valencia_snow_3h',
-       'Madrid_weather_id', 'Barcelona_weather_id', 'Bilbao_pressure',
-       'Seville_weather_id', 'Seville_temp_max', 'Madrid_pressure',
+    predict_vector = feature_vector_df
+    # ------------------------------------------------------------------------
+
+    X=predict_vector[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+       'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
+       'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
+       'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
+       'Madrid_clouds_all', 'Seville_wind_speed', 'Barcelona_rain_1h',
+       'Seville_pressure', 'Seville_rain_1h', 'Bilbao_snow_3h',
+       'Barcelona_pressure', 'Seville_rain_3h', 'Madrid_rain_1h',
+       'Barcelona_rain_3h', 'Valencia_snow_3h', 'Madrid_weather_id',
+       'Barcelona_weather_id', 'Bilbao_pressure', 'Seville_weather_id',
+       'Valencia_pressure', 'Seville_temp_max', 'Madrid_pressure',
        'Valencia_temp_max', 'Valencia_temp', 'Bilbao_weather_id',
        'Seville_temp', 'Valencia_humidity', 'Valencia_temp_min',
        'Barcelona_temp_max', 'Madrid_temp_max', 'Barcelona_temp',
        'Bilbao_temp_min', 'Bilbao_temp', 'Barcelona_temp_min',
-       'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp', 'Madrid_temp_min']]
-    # ------------------------------------------------------------------------
-    predict_vector=pd.DataFrame(predict_vector)
-    X=predict_vector
+       'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp',
+       'Madrid_temp_min']]
+
+
+
+
+    df=X.copy()
+
+    X['Valencia_pressure'] = X['Valencia_pressure'].fillna(df.Valencia_pressure.mode()[0])
+
+    #create dummy variables  for the Seville_pressure and also for the Valencia_wind_deg in the train data
+    X['Seville_pressure']=X.Seville_pressure.map({'sp25':25, 'sp23':23, 'sp24':24, 'sp21':21, 'sp16':16, 'sp9':9, 'sp15':15, 'sp19':19, 'sp22':22, 'sp11':11,
+    'sp8':8, 'sp4':4, 'sp6':6, 'sp13':13, 'sp17':17, 'sp20':20, 'sp18':18, 'sp14':14, 'sp12':12, 'sp5':5, 'sp10':10,
+    'sp7':7, 'sp3':3, 'sp2':2, 'sp1':1})
+
+    X['Valencia_wind_deg']=X.Valencia_wind_deg.map({'level_5':5, 'level_10':10, 'level_9':9, 'level_8':8, 'level_7':7, 'level_6':6, 'level_4':4,
+    'level_3':3, 'level_1':1, 'level_2':2})
 
     #standardization
     from sklearn.preprocessing import StandardScaler
