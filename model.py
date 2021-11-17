@@ -84,7 +84,7 @@ def _preprocess_data(data):
 
     df=X.copy()
 
-    X['Valencia_pressure'] = X['Valencia_pressure'].fillna(X.Valencia_pressure.mode()[0])
+    #X['Valencia_pressure'] = X['Valencia_pressure'].fillna(X.Valencia_pressure.mode()[0])
 
     #standardization
     from sklearn.preprocessing import StandardScaler
