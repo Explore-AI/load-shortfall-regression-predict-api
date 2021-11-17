@@ -76,7 +76,21 @@ def _preprocess_data(data):
        'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp', 'Madrid_temp_min']]
     # ------------------------------------------------------------------------
     predict_vector=pd.DataFrame(predict_vector)
-    return predict_vector
+    X=predict_vector
+
+    #standardization
+    from sklearn.preprocessing import StandardScaler
+
+    # create scaler object
+    scaler = StandardScaler()
+
+    # create scaled version of the predictors (there is no need to scale the response)
+    test_scaled = scaler.fit_transform(X)
+
+    # convert the scaled predictor values into a dataframe
+    X = pd.DataFrame(test_scaled,columns=X.columns)
+
+    return X
 
 
 def load_model(path_to_model:str):
