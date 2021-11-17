@@ -47,7 +47,7 @@ def _preprocess_data(data):
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
     # Load the dictionary as a Pandas DataFrame.
-    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
+    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict],index_col=0)
 
     # ---------------------------------------------------------------
     # NOTE: You will need to swap the lines below for your own data
