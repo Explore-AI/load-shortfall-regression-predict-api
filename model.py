@@ -63,7 +63,7 @@ def _preprocess_data(data):
     predict_vector = feature_vector_df
     # ------------------------------------------------------------------------
 
-    X=predict_vector[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+    X=feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
        'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
        'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
        'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
@@ -85,7 +85,7 @@ def _preprocess_data(data):
 
     df=X.copy()
 
-    X['Valencia_pressure'] = X['Valencia_pressure'].fillna(df.Valencia_pressure.mode()[0])
+    X['Valencia_pressure'] = X['Valencia_pressure'].fillna(X.Valencia_pressure.mode()[0])
 
     #create dummy variables  for the Seville_pressure and also for the Valencia_wind_deg in the train data
     X['Seville_pressure']=X.Seville_pressure.map({'sp25':25, 'sp23':23, 'sp24':24, 'sp21':21, 'sp16':16, 'sp9':9, 'sp15':15, 'sp19':19, 'sp22':22, 'sp11':11,
