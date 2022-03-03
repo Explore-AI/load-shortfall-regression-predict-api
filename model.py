@@ -64,7 +64,7 @@ def _preprocess_data(data):
 
     feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
     feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'], downcast = 'float')
-    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=df['Valencia_pressure'].mean())
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=data['Valencia_pressure'].mean())
 
     
     # ------------------------------------------------------------------------
