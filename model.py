@@ -83,7 +83,7 @@ def _preprocess_data(data):
        'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp', 'Madrid_temp_min']]
     # ------------------------------------------------------------------------
     np.any(np.isnan(predict_vector))
-    np.all(np.isinfinite(predict_vector))
+    np.all(np.isfinite(predict_vector))
 
     return predict_vector
 
