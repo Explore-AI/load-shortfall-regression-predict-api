@@ -10,5 +10,7 @@ df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)
 df_clean['Valencia_wind_deg'] =pd.to_numeric(df_clean['Valencia_wind_deg'])
 df_clean['Seville_pressure'] = df_clean['Seville_pressure'].str.extract('(\d+)')
 df_clean['Seville_pressure'] =pd.to_numeric(df_clean['Seville_pressure'])
+df_clean = df_clean.drop(['Unnamed: 0', 'time'], axis=1)
 
 print(df_clean)
+print(df_clean.info())
