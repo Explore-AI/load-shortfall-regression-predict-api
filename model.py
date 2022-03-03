@@ -86,7 +86,7 @@ def load_model(path_to_model:str):
     any auxiliary functions required to process your model's artifacts.
 """
 
-def make_prediction(data, RF_model):
+def make_prediction(data, model):
     """Prepare request data for model prediction.
 
     Parameters
@@ -105,6 +105,6 @@ def make_prediction(data, RF_model):
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
-    prediction = RF_model.predict(prep_data)
+    prediction = model.predict(prep_data)
     # Format as list for output standardisation.
     return prediction[0].tolist()
