@@ -59,6 +59,23 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     predict_vector = feature_vector_df
+    feature_vector_df['Day'] = feature_vector_df['time'].dt.day
+    # month
+    feature_vector_df['Month'] = feature_vector_df['time'].dt.month
+    # year
+    feature_vector_df['Year'] = feature_vector_df['time'].dt.year
+    # hour
+    feature_vector_df['Start_hour'] = feature_vector_df['time'].dt.hour
+    # minute
+    feature_vector_df['Start_minute'] = feature_vector_df['time'].dt.minute
+    # second
+    feature_vector_df['Start_second'] = feature_vector_df['time'].dt.second
+    # Monday is 0 and Sunday is 6
+    feature_vector_df['Start_weekday'] = feature_vector_df['time'].dt.weekday
+    # week of the year
+    feature_vector_df['Start_week_of_year'] = feature_vector_df['time'].dt.week
+    # duration
+    #df['Duration'] = dfer['End_date']-dfer['Start_date']
     feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
     feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'], downcast = 'float')
 
