@@ -58,7 +58,8 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df
+    import preprocessing_script
+    predict_vector = feature_vector_df[preprocessing_script]
     # ------------------------------------------------------------------------
 
     return predict_vector
