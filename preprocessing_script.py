@@ -14,5 +14,3 @@ feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].
 feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
 feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
 feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'])
-
-print(feature_vector_df['Valencia_pressure'].info())
