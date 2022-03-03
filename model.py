@@ -9,7 +9,7 @@
     Please follow the instructions provided within the README.md file
     located within this directory for guidance on how to use this script
     correctly.
-
+ 
     Importantly, you will need to modify this file by adding
     your own data preprocessing steps within the `_preprocess_data()`
     function.
@@ -58,13 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
-    feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)
-    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=feature_vector_df['Valencia_pressure'].mean())
-    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
-    feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
-    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
-    feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'])
+    
 
     predict_vector = feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
        'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',

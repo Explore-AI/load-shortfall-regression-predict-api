@@ -4,7 +4,7 @@ import numpy as np
 feature_vector_df = pd.read_csv('/utils/data/df_train.csv')
 
 
-feature_vector_df['time'] = pd.to_datetime(df_clean['time'])
+feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
 
 feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)
 
