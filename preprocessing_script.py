@@ -1,13 +1,15 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('df_train.csv')
+feature_vector_df = pd.read_csv('/utils/data/df_train.csv')
 
-df_clean = df
-df_clean['Valencia_pressure'] = df_clean['Valencia_pressure'].fillna(value=df['Valencia_pressure'].mean())
-df_clean['time'] = pd.to_datetime(df_clean['time'])
-df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)')
-df_clean['Valencia_wind_deg'] =pd.to_numeric(df_clean['Valencia_wind_deg'])
-df_clean['Seville_pressure'] = df_clean['Seville_pressure'].str.extract('(\d+)')
-df_clean['Seville_pressure'] =pd.to_numeric(df_clean['Seville_pressure'])
-df_clean = df_clean.drop(['Unnamed: 0', 'time'], axis=1)
+
+feature_vector_df['time'] = pd.to_datetime(df_clean['time'])
+
+feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)
+
+feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=feature_vector_df['Valencia_pressure'].mean())
+feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'])
