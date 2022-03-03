@@ -59,7 +59,7 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     predict_vector = feature_vector_df
-    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
+
 
     feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1)  
     feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
