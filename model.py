@@ -9,7 +9,7 @@
     Please follow the instructions provided within the README.md file
     located within this directory for guidance on how to use this script
     correctly.
- 
+
     Importantly, you will need to modify this file by adding
     your own data preprocessing steps within the `_preprocess_data()`
     function.
@@ -58,10 +58,10 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    feature_vector_df = [feature_vector_df.drop(columns =['time', 'Valencia_pressure', 'Valencia_wind_deg', 'Seville_pressure'], inplace= True)]
+    predict_vector = feature_vector_df[feature_vector_df.drop(columns =['time', 'Valencia_pressure', 'Valencia_wind_deg', 'Seville_pressure'], inplace= True)]
     # ------------------------------------------------------------------------
 
-    return 
+    return predict_vector
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
@@ -86,7 +86,7 @@ def load_model(path_to_model:str):
     any auxiliary functions required to process your model's artifacts.
 """
 
-def make_prediction(data, model):
+def make_prediction(data, RF_model):
     """Prepare request data for model prediction.
 
     Parameters
@@ -105,7 +105,6 @@ def make_prediction(data, model):
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
-    prediction = model.predict(prep_data)
+    prediction = RF_model.predict(prep_data)
     # Format as list for output standardisation.
     return prediction[0].tolist()
-
