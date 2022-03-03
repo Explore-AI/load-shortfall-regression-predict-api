@@ -59,10 +59,10 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     df = data
-    feature_vector_df['Valencia_wind_deg'] = df['Valencia_wind_deg'].str.extract('(\d+)')
+    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
     feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'], downcast = 'float')
 
-    feature_vector_df['Seville_pressure'] = df['Seville_pressure'].str.extract('(\d+)')
+    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
     feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'], downcast = 'float')
     feature_vector_df['Valencia_pressure'] = df['Valencia_pressure'].fillna(value=df['Valencia_pressure'].mean())
 
