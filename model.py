@@ -58,10 +58,10 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    feature_vector_df.drop(columns =['time', 'Valencia_pressure', 'Valencia_wind_deg', 'Seville_pressure'], inplace= True)
     # ------------------------------------------------------------------------
 
-    return predict_vector
+    return feature_vector_df
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
