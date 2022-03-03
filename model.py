@@ -58,7 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    #feature_vector_df.drop(columns =['time', 'Valencia_pressure', 'Valencia_wind_deg', 'Seville_pressure'], inplace= True)
+    feature_vector_df.drop(columns =['time', 'Valencia_pressure', 'Valencia_wind_deg', 'Seville_pressure'], inplace= True)
     # ------------------------------------------------------------------------
 
     return feature_vector_df
