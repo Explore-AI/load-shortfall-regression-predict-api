@@ -59,6 +59,7 @@ def _preprocess_data(data):
 
     # ----------- Replace this code with your own preprocessing steps --------
     predict_vector = feature_vector_df
+    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
     feature_vector_df['Day'] = feature_vector_df['time'].dt.day
     # month
     feature_vector_df['Month'] = feature_vector_df['time'].dt.month
