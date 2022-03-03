@@ -58,7 +58,27 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=feature_vector_df['Valencia_pressure'].mean())
+    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+    feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'])
+
+    predict_vector = feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+       'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
+       'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
+       'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
+       'Madrid_clouds_all', 'Seville_wind_speed', 'Barcelona_rain_1h',
+       'Seville_pressure', 'Seville_rain_1h', 'Bilbao_snow_3h',
+       'Barcelona_pressure', 'Seville_rain_3h', 'Madrid_rain_1h',
+       'Barcelona_rain_3h', 'Valencia_snow_3h', 'Madrid_weather_id',
+       'Barcelona_weather_id', 'Bilbao_pressure', 'Seville_weather_id',
+       'Valencia_pressure', 'Seville_temp_max', 'Madrid_pressure',
+       'Valencia_temp_max', 'Valencia_temp', 'Bilbao_weather_id',
+       'Seville_temp', 'Valencia_humidity', 'Valencia_temp_min',
+       'Barcelona_temp_max', 'Madrid_temp_max', 'Barcelona_temp',
+       'Bilbao_temp_min', 'Bilbao_temp', 'Barcelona_temp_min',
+       'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp', 'Madrid_temp_min']]
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -86,7 +106,7 @@ def load_model(path_to_model:str):
     any auxiliary functions required to process your model's artifacts.
 """
 
-def make_prediction(data, RF_model):
+def make_prediction(data, model):
     """Prepare request data for model prediction.
 
     Parameters
@@ -105,6 +125,7 @@ def make_prediction(data, RF_model):
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
-    prediction = RF_model.predict(prep_data)
+    prediction = model.predict(prep_data)
     # Format as list for output standardisation.
     return prediction[0].tolist()
+
