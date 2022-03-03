@@ -58,14 +58,14 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    
-    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    df = data
+    feature_vector_df['Valencia_wind_deg'] = df['Valencia_wind_deg'].str.extract('(\d+)')
     feature_vector_df['Valencia_wind_deg'] =pd.to_numeric(feature_vector_df['Valencia_wind_deg'], downcast = 'float')
 
-    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+    feature_vector_df['Seville_pressure'] = df['Seville_pressure'].str.extract('(\d+)')
     feature_vector_df['Seville_pressure'] =pd.to_numeric(feature_vector_df['Seville_pressure'], downcast = 'float')
-    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(value=feature_vector_df['Valencia_pressure'].mean())
-    
+    feature_vector_df['Valencia_pressure'] = df['Valencia_pressure'].fillna(value=df['Valencia_pressure'].mean())
+
     predict_vector = feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
        'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
        'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
