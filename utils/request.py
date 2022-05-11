@@ -54,4 +54,3 @@ print(f"API prediction result: {api_response.json()[0]}")
 print(f"The response took: {api_response.elapsed.total_seconds()} seconds")
 print("*"*50)
 
-print ("123")
