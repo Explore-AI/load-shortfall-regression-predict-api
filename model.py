@@ -58,7 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    predict_vector = feature_vector_df #[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -87,21 +87,7 @@ def load_model(path_to_model:str):
 """
 
 def make_prediction(data, model):
-    """Prepare request data for model prediction.
-
-    Parameters
-    ----------
-    data : str
-        The data payload received within POST requests sent to our API.
-    model : <class: sklearn.estimator>
-        An sklearn model object.
-
-    Returns
-    -------
-    list
-        A 1-D python list containing the model prediction.
-
-    """
+   
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
