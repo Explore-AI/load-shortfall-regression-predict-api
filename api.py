@@ -30,8 +30,12 @@ app = Flask(__name__)
 # Load our model into memory.
 # Please update this path to reflect your own trained model.
 static_model = load_model(
+<<<<<<< HEAD
     path_to_model='assets/trained-models/mlr_model.pkl')
 
+=======
+    path_to_model=r'C:\Users\Roger Arendse\Desktop\EDSA\Technical\5. Advanced Regression\1. Predict\load-shortfall-regression-predict-api\assets\mlr_model.pkl')
+>>>>>>> 0d237ecf520171170fecf3f63ce9ffcc087fdb8c
 print ('-'*40)
 print ('Model successfully loaded')
 print ('-'*40)
