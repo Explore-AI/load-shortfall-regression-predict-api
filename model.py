@@ -58,6 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
+<<<<<<< HEAD
     # feature engineering 
     
     # missing values 
@@ -83,6 +84,9 @@ def _preprocess_data(data):
     feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1) 
 
     predict_vector = feature_vector_df
+=======
+    predict_vector = feature_vector_df[['Seville_humidity','Bilbao_rain_1h','Valencia_wind_speed']]
+>>>>>>> 0d237ecf520171170fecf3f63ce9ffcc087fdb8c
     # ------------------------------------------------------------------------
 
     return predict_vector
