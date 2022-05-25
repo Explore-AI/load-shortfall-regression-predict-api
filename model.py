@@ -58,35 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-<<<<<<< HEAD
-    # feature engineering 
-    
-    # missing values 
-    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(feature_vector_df['Valencia_pressure'].mode()[0])
-    
-    # time 
-    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'], format='%Y-%m-%d %H:%M:%S')
-
-    # extract last element in feature_vector_df, tranform
-    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
-    feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
-
-    # extract last element in feature_vector_df
-    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
-    feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df['Seville_pressure'])
-
-    # Extract day, month and year from time in feature_vector_df
-    feature_vector_df['time_day'] = feature_vector_df['time'].dt.day 
-    feature_vector_df['time_month'] = feature_vector_df['time'].dt.month 
-    feature_vector_df['time_year'] = feature_vector_df['time'].dt.year 
-
-    # drop Unnamed: 0 and time 
-    feature_vector_df = feature_vector_df.drop(['Unnamed: 0', 'time'], axis=1) 
-
-    predict_vector = feature_vector_df
-=======
     predict_vector = feature_vector_df[['Seville_humidity','Bilbao_rain_1h','Valencia_wind_speed']]
->>>>>>> 0d237ecf520171170fecf3f63ce9ffcc087fdb8c
     # ------------------------------------------------------------------------
 
     return predict_vector
