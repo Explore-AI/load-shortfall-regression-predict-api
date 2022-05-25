@@ -47,7 +47,7 @@ def _preprocess_data(data):
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
     # Load the dictionary as a Pandas DataFrame.
-    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
+    df = feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
 
     # ---------------------------------------------------------------
     # NOTE: You will need to swap the lines below for your own data
@@ -58,7 +58,39 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+
+    # Replacing Valencia_pressure NAN values with mode
+    df['Valencia_pressure'] = df['Valencia_pressure'].fillna(1016.0)
+
+    # Transforming Valencia_wind_deg to correct datatype
+    df['Valencia_wind_deg'] = df['Valencia_wind_deg'].str.extract('(\d+)')
+    df['Valencia_wind_deg'] = pd.to_numeric(df['Valencia_wind_deg'])
+    df['Seville_pressure'] = df['Seville_pressure'].str.extract('(\d+)')
+    df['Seville_pressure'] = pd.to_numeric(df['Seville_pressure'])
+
+    # Converting time column type from an object to a datetime format
+    df['Year']  = df['time'].astype('datetime64').dt.year
+    # Extracting useful columns from the time column
+    df['Month_of_year']  = df['time'].astype('datetime64').dt.month
+    df['Week_of_year'] = df['time'].astype('datetime64').dt.isocalendar().week
+    df['Day_of_year']  = df['time'].astype('datetime64').dt.dayofyear
+    df['Day_of_month']  = df['time'].astype('datetime64').dt.day
+    df['Day_of_week'] = df['time'].astype('datetime64').dt.dayofweek
+    df['Hour_of_week'] = ((df['time'].astype('datetime64').dt.dayofweek) * 24 + 24) - (24 - df['time'].astype('datetime64').dt.hour)
+    df['Hour_of_day']  = df['time'].astype('datetime64').dt.hour
+    
+    predict_vector = df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+       'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
+       'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
+       'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
+       'Madrid_clouds_all', 'Seville_wind_speed', 'Barcelona_rain_1h',
+       'Seville_pressure', 'Seville_rain_1h', 'Bilbao_snow_3h',
+       'Barcelona_pressure', 'Seville_rain_3h', 'Madrid_rain_1h',
+       'Barcelona_rain_3h', 'Valencia_snow_3h', 'Bilbao_pressure',
+       'Valencia_pressure', 'Seville_temp_max', 'Madrid_pressure',
+       'Valencia_temp_max', 'Seville_temp', 'Valencia_humidity',
+       'Barcelona_temp_max', 'Madrid_temp_max', 'Bilbao_temp_min', 'Year',
+       'Month_of_year', 'Day_of_month', 'Day_of_week', 'Hour_of_day']]
     # ------------------------------------------------------------------------
 
     return predict_vector
