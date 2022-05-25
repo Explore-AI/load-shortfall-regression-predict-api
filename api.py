@@ -30,7 +30,9 @@ app = Flask(__name__)
 # Load our model into memory.
 # Please update this path to reflect your own trained model.
 static_model = load_model(
-    path_to_model='assets/trained-models/load_shortfall_simple_lm_regression.pkl')
+
+    path_to_model='assets/trained-models/jm1_model.pkl')
+    # path_to_model='assets/trained-models/load_shortfall_simple_lm_regression.pkl')
 
 print ('-'*40)
 print ('Model successfully loaded')
@@ -52,6 +54,7 @@ def model_prediction():
     # We then preprocess our data, and use our pretrained model to make a
     # prediction.
     output = make_prediction(data, static_model)
+    # print(output)
     # We finally package this prediction as a JSON object to deliver a valid
     # response with our API.
     return jsonify(output)
@@ -62,4 +65,4 @@ def model_prediction():
 # This will allow Flask to automatically restart itself everytime you
 # update your API code.
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5001, debug=False)

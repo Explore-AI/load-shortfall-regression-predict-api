@@ -21,6 +21,7 @@
 import requests
 import pandas as pd
 import numpy as np
+import json
 
 # Load data from file to send as an API POST request.
 # We prepare a DataFrame with the public test set + riders data
@@ -30,14 +31,16 @@ test = pd.read_csv('./data/df_test.csv')
 
 # Convert our DataFrame to a JSON string.
 # This step is necessary in order to transmit our data via HTTP/S
-feature_vector_json = test.iloc[1].to_json()
+# feature_vector_json = test.iloc[1].to_json()
+feature_vector_json = test.to_json()
 
 # Specify the URL at which the API will be hosted.
 # NOTE: When testing your instance of the API on a remote machine
 # replace the URL below with its public IP:
 
 # url = 'http://{public-ip-address-of-remote-machine}:5000/api_v0.1'
-url = 'http://127.0.0.1:5000/api_v0.1'
+url = 'http://127.0.0.1:5001/api_v0.1'
+
 
 # Perform the POST request.
 print(f"Sending POST request to web server API at: {url}")
@@ -46,6 +49,7 @@ print(f"Querying API with the following data: \n {test.iloc[1].to_list()}")
 print("")
 # Here `api_response` represents the response we get from our API
 api_response = requests.post(url, json=feature_vector_json)
+
 
 # Display the prediction result
 print("Received POST response:")
