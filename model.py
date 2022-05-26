@@ -5,7 +5,7 @@
     Author: Explore Data Science Academy.
 
     Note:
-    ---------------------------------------------------------------------
+    --------------------------------------------------------------------
     Please follow the instructions provided within the README.md file
     located within this directory for guidance on how to use this script
     correctly.
@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+import xgboost as xgb
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
