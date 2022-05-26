@@ -26,9 +26,9 @@ import os
 # Load data from fillse to send as an API POST request.
 # We prepare a DataFrame with the public test set + riders data
 # from the Kaggle challenge.
-path = r'C:\Users\Roger Arendse\Desktop\EDSA\Technical\5. Advanced Regression\1. Predict\Final_API\load-shortfall-regression-predict-api\utils\data\df_train.csv'
-relative_path = os.path.relpath(path)
-test = pd.read_csv(relative_path)
+#path = r'C:\Users\Roger Arendse\Desktop\EDSA\Technical\5. Advanced Regression\1. Predict\Final_API\load-shortfall-regression-predict-api\utils\data\df_train.csv'
+#relative_path = os.path.relpath(path)
+test = pd.read_csv('../data/df_train.csv')
 
 
 # Convert our DataFrame to a JSON string.
