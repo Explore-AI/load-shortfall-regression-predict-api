@@ -156,8 +156,7 @@ In this project, we will be carrying out Standard Scaling, becasue of it's robus
 # Create standardization object
 scaler = StandardScaler()
 # Save standardized features into new variable
-#"""
-#We used a fit transform method, which first fits in the standardscaler and then transforms the data """
+
 X_scaled = scaler.fit_transform(X)
 X_scaled = pd.DataFrame(X_scaled,columns=X.columns)
 X_scaled.head()
