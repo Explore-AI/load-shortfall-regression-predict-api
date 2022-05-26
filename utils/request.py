@@ -21,11 +21,14 @@
 import requests
 import pandas as pd
 import numpy as np
+import os
 
-# Load data from file to send as an API POST request.
+# Load data from fillse to send as an API POST request.
 # We prepare a DataFrame with the public test set + riders data
 # from the Kaggle challenge.
-test = pd.read_csv(r'C:\Users\Roger Arendse\Desktop\EDSA\Technical\5. Advanced Regression\1. Predict\load-shortfall-regression-predict-api\utils\data\df_train.csv')
+path = r'C:\Users\Roger Arendse\Desktop\EDSA\Technical\5. Advanced Regression\1. Predict\Final_API\load-shortfall-regression-predict-api\utils\data\df_train.csv'
+relative_path = os.path.relpath(path)
+test = pd.read_csv(relative_path)
 
 
 # Convert our DataFrame to a JSON string.
@@ -37,7 +40,7 @@ feature_vector_json = test.iloc[1].to_json()
 # replace the URL below with its public IP:
 
 # url = 'http://{public-ip-address-of-remote-machine}:5000/api_v0.1'
-url = 'http://54.77.91.19/api_v0.1'
+url = 'http://52.212.86.18/api_v0.1'
 
 # Perform the POST request.
 print(f"Sending POST request to web server API at: {url}")
