@@ -27,6 +27,7 @@ import pandas as pd
 import pickle
 import json
 
+
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
 
@@ -58,12 +59,24 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    feature_vector_df['time'] = pd.to_datetime(
+        feature_vector_df['time'], format='%Y-%m-%d %H:%M:%S')
+    feature_vector_df['year'] = feature_vector_df['time'].dt.year
+    feature_vector_df['month'] = feature_vector_df['time'].dt.month
+    feature_vector_df['day'] = feature_vector_df['time'].dt.day
+    feature_vector_df['hour'] = feature_vector_df['time'].dt.hour
+    feature_vector_df['minute'] = feature_vector_df['time'].dt.minute
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(
+        feature_vector_df['Valencia_pressure'].mode()[0])
+    feature_vector_df = feature_vector_df(["minute", "Barcelona_temp_min", "Bilbao_temp_min", "Bilbao_temp", 'Seville_temp_max', 'Valencia_temp_max',
+                                           'Valencia_temp_min', 'Barcelona_temp_max', 'Madrid_temp_max', 'Bilbao_temp_max', 'Seville_temp_min', "Bilbao_wind_deg"], axis=1)
+
     # ------------------------------------------------------------------------
 
-    return predict_vector
+    return feature_vector_df
 
-def load_model(path_to_model:str):
+
+def load_model(path_to_model: str):
     """Adapter function to load our pretrained model into memory.
 
     Parameters
@@ -85,6 +98,7 @@ def load_model(path_to_model:str):
 """ You may use this section (above the make_prediction function) of the python script to implement 
     any auxiliary functions required to process your model's artifacts.
 """
+
 
 def make_prediction(data, model):
     """Prepare request data for model prediction.
