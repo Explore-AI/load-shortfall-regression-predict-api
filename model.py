@@ -28,40 +28,14 @@ import pickle
 import json
 
 def _preprocess_data(data):
-    """Private helper function to preprocess data for model prediction.
-
-    NB: If you have utilised feature engineering/selection in order to create
-    your final model you will need to define the code here.
-
-
-    Parameters
-    ----------
-    data : str
-        The data payload received within POST requests sent to our API.
-
-    Returns
-    -------
-    Pandas DataFrame : <class 'pandas.core.frame.DataFrame'>
-        The preprocessed data, ready to be used our model for prediction.
-    """
+  
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
-    # Load the dictionary as a Pandas DataFrame.
-    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
-
-    # ---------------------------------------------------------------
-    # NOTE: You will need to swap the lines below for your own data
-    # preprocessing methods.
-    #
-    # The code below is for demonstration purposes only. You will not
-    # receive marks for submitting this code in an unchanged state.
-    # ---------------------------------------------------------------
-
-    # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-    # ------------------------------------------------------------------------
-
+    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict]) 
+    
+    predict_vector = feature_vector_df[['Seville_wind_speed', 'Barcelona_wind_speed', 'Bilbao_rain_1h']]
     return predict_vector
+ 
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
