@@ -51,9 +51,11 @@ def model_prediction():
     data = request.get_json(force=True)
     # We then preprocess our data, and use our pretrained model to make a
     # prediction.
+    print("7777&&&&&&&&&&&&&&&&&&&&&")
     output = make_prediction(data, static_model)
     # We finally package this prediction as a JSON object to deliver a valid
     # response with our API.
+    print("2222222222 , output")
     return jsonify(output)
 
 # Configure Server Startup properties.
