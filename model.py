@@ -47,7 +47,7 @@ def _preprocess_data(data):
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
     # Load the dictionary as a Pandas DataFrame.
-    feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
+    # feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
 
     # ---------------------------------------------------------------
     # NOTE: You will need to swap the lines below for your own data
@@ -56,9 +56,46 @@ def _preprocess_data(data):
     # The code below is for demonstration purposes only. You will not
     # receive marks for submitting this code in an unchanged state.
     # ---------------------------------------------------------------
+    # train = train_df = pd.DataFrame.from_dict([feature_vector_dict])
+
+    train = train_df = pd.DataFrame.from_dict(feature_vector_dict)
+    train_1 = train
+
+    # Data Preprocessing
+    train_1['Valencia_pressure'] = train_1['Valencia_pressure'].fillna(train_1['Valencia_pressure'].mode()[0])
+    train_1['time'] = pd.to_datetime(train_1['time'])
+
+    # Transform the Seville_pressure column
+    if train_1.Valencia_wind_deg.dtypes == 'O':
+        train_1['Valencia_wind_deg'] = train_1['Valencia_wind_deg'].str.extract(
+            '(\d+)')  # extract the numbers from the string
+        train_1['Valencia_wind_deg'] = pd.to_numeric(
+            train_1['Valencia_wind_deg'])  # next, transform from object datatype to numeric
+
+    # Transform the Seville_pressure column
+    if train.Seville_pressure.dtypes == 'O':
+        train_1['Seville_pressure'] = train_1['Seville_pressure'].str.extract(
+            '(\d+)')  # extract the numbers from the string
+        train_1['Seville_pressure'] = pd.to_numeric(
+            train_1['Seville_pressure'])  # next, transform from object datatype to numeric
+
+    # Transform Time feature
+    train_1['Year'] = train_1['time'].dt.year  # year
+    train_1['Day'] = train_1['time'].dt.day  # Day
+    train_1['Month'] = train_1['time'].dt.month  # month
+    train_1['hour'] = train_1['time'].dt.hour  # hour
+
+    train_sub = train_1
+
+    to_drop_list = ['Unnamed: 0', 'time']
+    drop_list = [col for col in train_sub.columns if col in to_drop_list]
+    train_sub = train_sub.drop(drop_list, axis=1)
+    X_columns = [col for col in train_sub.columns if col != 'load_shortfall_3h']
+
+    predict_vector = train_sub[X_columns]
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    # predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -104,6 +141,7 @@ def make_prediction(data, model):
     """
     # Data preprocessing.
     prep_data = _preprocess_data(data)
+    print(prep_data)
     # Perform prediction with model and preprocessed data.
     prediction = model.predict(prep_data)
     # Format as list for output standardisation.
