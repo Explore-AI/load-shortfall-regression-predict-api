@@ -21,7 +21,7 @@
 import pickle
 import json
 import numpy as np
-from model import load_model, make_prediction
+from model import load_model, make_prediction, _preprocess_data
 from flask import Flask, request, jsonify
 
 # Application definition
@@ -30,8 +30,7 @@ app = Flask(__name__)
 # Load our model into memory.
 # Please update this path to reflect your own trained model.
 static_model = load_model(
-    path_to_model='assets/trained-models/load_shortfall_simple_lm_regression.pkl')
-
+    path_to_model='assets/trained-models/team_jm3.pkl')
 print ('-'*40)
 print ('Model successfully loaded')
 print ('-'*40)
@@ -52,9 +51,11 @@ def model_prediction():
     # We then preprocess our data, and use our pretrained model to make a
     # prediction.
     output = make_prediction(data, static_model)
+    #output = _preprocess_data(data)
     # We finally package this prediction as a JSON object to deliver a valid
     # response with our API.
     return jsonify(output)
+    #return output
 
 # Configure Server Startup properties.
 # Note:
