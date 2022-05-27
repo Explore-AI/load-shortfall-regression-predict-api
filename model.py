@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
-from xgboost.sklearn import XGBRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
