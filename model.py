@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
-import xgboost as xgb
+from xgboost.sklearn import XGBRegressor
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
