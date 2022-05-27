@@ -21,7 +21,7 @@
 import pickle
 import json
 import numpy as np
-from model import load_model, make_prediction, _preprocess_data
+from model import load_model, make_prediction
 from flask import Flask, request, jsonify
 
 # Application definition
