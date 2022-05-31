@@ -118,6 +118,7 @@ def _preprocess_data(data):
        'Barcelona_temp_min', 'Bilbao_temp_max', 'Seville_temp_min',
        'Madrid_temp', 'Madrid_temp_min', 'Year', 'Month', 'Day', 'Hour']]
 
+    predict_vector = feature_vector_df.drop(columns = elimination_list)
 
     # ----------- Replace this code with your own preprocessing steps --------
     #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
