@@ -92,7 +92,7 @@ def _preprocess_data(data):
     
     feature_vector_df['Valencia_wind_deg'] = wind_deg_test
     feature_vector_df['Seville_pressure'] = pressure_df_test
-    feature_vector_df['Valencia_pressure'].fillna(feature_vector_df['Valencia_pressure'].median(), inplace=True) #Manually added mean
+    feature_vector_df['Valencia_pressure'].fillna(1013.148351, inplace=True) #Manually added mean #Manually added mean
     
     predict_vector = feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
        'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
