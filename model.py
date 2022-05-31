@@ -66,12 +66,6 @@ def _preprocess_data(data):
     
     cat_features_test = feature_vector_df[list(feature_vector_df.select_dtypes(include=['object']).columns)]
     
-    #elimination list
-    elimination_list = ['Madrid_temp_max','Madrid_temp',
-                    'Seville_temp_max','Seville_temp','Seville_temp_min',
-                    'Valencia_temp_max', 'Valencia_temp','Valencia_temp_min',
-                    'Barcelona_temp_max','Barcelona_temp','Barcelona_temp_min',
-                    'Bilbao_temp_max','Bilbao_temp','Bilbao_temp_min']
 
     ############# creating features based on data type
     features_test = feature_vector_df.select_dtypes(include=['float64', 'int64']).columns
@@ -81,7 +75,7 @@ def _preprocess_data(data):
     #Droping columns
     feature_vector_df = feature_vector_df.drop(columns='Unnamed: 0')
     feature_vector_df = feature_vector_df.drop(columns=id_features_test)
-    feature_vector_df = feature_vector_df.drop(columns = elimination_list)
+    
 
     valencia_wind_test = []
     for i in feature_vector_df['Valencia_wind_deg']:
@@ -118,8 +112,7 @@ def _preprocess_data(data):
        'Barcelona_temp_min', 'Bilbao_temp_max', 'Seville_temp_min',
        'Madrid_temp', 'Madrid_temp_min', 'Year', 'Month', 'Day', 'Hour']]
 
-    predict_vector = feature_vector_df.drop(columns = elimination_list)
-
+    
     # ----------- Replace this code with your own preprocessing steps --------
     #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
