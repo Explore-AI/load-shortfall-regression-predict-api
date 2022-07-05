@@ -5,7 +5,7 @@
     Author: Explore Data Science Academy.
 
     Note:
-    --------------------------------------------------------------------
+    ---------------------------------------------------------------------
     Please follow the instructions provided within the README.md file
     located within this directory for guidance on how to use this script
     correctly.
@@ -26,9 +26,6 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
-from sklearn.ensemble import RandomForestRegressor
-from xgboost.sklearn import XGBRegressor
-
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
@@ -52,19 +49,34 @@ def _preprocess_data(data):
     # Load the dictionary as a Pandas DataFrame.
     feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
 
-    # ---------------------------------------------------------------
-    # NOTE: You will need to swap the lines below for your own data
-    # preprocessing methods.
-    #
-    # The code below is for demonstration purposes only. You will not
-    # receive marks for submitting this code in an unchanged state.
-    # ---------------------------------------------------------------
+  
+    # Splitting time into different components
+    feature_vector_df['Hour_of_day'] = feature_vector_df['time'].astype('datetime64').dt.hour
+    feature_vector_df['Year'] = feature_vector_df['time'].astype('datetime64').dt.year
+    feature_vector_df['Hour_of_week'] = feature_vector_df['time'].astype('datetime64').dt.hour
+    feature_vector_df['Day_of_month'] = feature_vector_df['time'].astype('datetime64').dt.day
+    feature_vector_df['Day_of_week'] = feature_vector_df['time'].astype('datetime64').dt.day
 
-    # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-    # ------------------------------------------------------------------------
+    # Dropping the feature
+    feature_vector_df = feature_vector_df.drop('time',axis=1)
+    feature_vector_df = feature_vector_df.drop('Unnamed: 0',axis=1)
 
+    # Fill in null values with mode
+    feature_vector_df.Valencia_pressure.fillna(1014.148351, inplace=True)
+
+    # Encodeing the catagorical data
+    from sklearn.preprocessing import OrdinalEncoder
+    enc = OrdinalEncoder()
+    feature_vector_df.Valencia_wind_deg = enc.fit_transform(feature_vector_df[['Valencia_wind_deg']])
+    feature_vector_df.Seville_pressure = enc.fit_transform(feature_vector_df[['Seville_pressure']])
+
+  
+    predict_vector = feature_vector_df.copy()
+
+    # predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    
     return predict_vector
+
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
@@ -105,9 +117,13 @@ def make_prediction(data, model):
         A 1-D python list containing the model prediction.
 
     """
+    result_list = list() 
+
     # Data preprocessing.
     prep_data = _preprocess_data(data)
     # Perform prediction with model and preprocessed data.
     prediction = model.predict(prep_data)
+
     # Format as list for output standardisation.
-    return prediction[0].tolist()
+    result_list.append(prediction[0].tolist())
+    return result_list
