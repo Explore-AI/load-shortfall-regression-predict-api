@@ -25,7 +25,7 @@ import numpy as np
 # Load data from file to send as an API POST request.
 # We prepare a DataFrame with the public test set + riders data
 # from the Kaggle challenge.
-test = pd.read_csv('utils\data\df_test.csv')
+test = pd.read_csv('df_test.csv')
 
 
 # Convert our DataFrame to a JSON string.
