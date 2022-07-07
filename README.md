@@ -1,7 +1,7 @@
 # Flask-based Model API
 #### EXPLORE Data Science Academy Regression Predict
 
-### Table of Contents
+###  Table of Contents
 
 - [Flask-based Model API](#flask-based-model-api)
       - [EXPLORE Data Science Academy Regression Predict](#explore-data-science-academy-regression-predict)
@@ -19,7 +19,7 @@
       - [2.4) Running the API on a remote AWS EC2 instance](#24-running-the-api-on-a-remote-aws-ec2-instance)
   - [3) FAQ](#3-faq)
 
-## 1) Overview
+## 1)  Overview
 
 This repository forms the basis of *Task 2* for the **Regression Predict** within EDSA's Data Science course. It hosts template code which will enable students to deploy their own developed models through a web server-based API.   
 
@@ -30,7 +30,7 @@ This repository forms the basis of *Task 2* for the **Regression Predict** withi
 
 An API - or Application Programming Interface - refers to a set of procedures and protocols that allows us to send and request information between ourselves and remote applications. You can think of this as a channel of communication to a remote server using specific commands that enable you to use their applications without needing to host that functionality yourself. Many types of APIs exist, but for this predict task we are interested specifically in Web APIs. These allow us to send and receive information using web development languages, such as HTML and JSON. The video above provides a simple and intuitive explanation of how APIs operate.
 
-#### 1.2) How our API will work
+####  1.2) How our API will work
 
 <p align='center'>
    <img src="assets/imgs/API.png"
