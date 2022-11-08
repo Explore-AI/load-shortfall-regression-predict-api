@@ -57,9 +57,67 @@ def _preprocess_data(data):
     # receive marks for submitting this code in an unchanged state.
     # ---------------------------------------------------------------
 
+     # ----------- Replace this code with your own preprocessing steps --------
+    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
+    feature_vector_df['Year'] = feature_vector_df['time'].dt.year
+    feature_vector_df['Month'] = feature_vector_df['time'].dt.month
+    feature_vector_df['Day'] = feature_vector_df['time'].dt.day
+    feature_vector_df['Hour'] = feature_vector_df['time'].dt.hour
+    
+    cat_features_test = feature_vector_df[list(feature_vector_df.select_dtypes(include=['object']).columns)]
+    
+
+    ############# creating features based on data type
+    features_test = feature_vector_df.select_dtypes(include=['float64', 'int64']).columns
+    
+    id_features_test = [var for var in features_test if var[-2:] == 'id']
+    
+    #Droping columns
+    feature_vector_df = feature_vector_df.drop(columns='Unnamed: 0')
+    feature_vector_df = feature_vector_df.drop(columns=id_features_test)
+    
+
+    valencia_wind_test = []
+    for i in feature_vector_df['Valencia_wind_deg']:
+        value = i.split('_')[-1:]
+        valencia_wind_test = valencia_wind_test + value
+        valencia_wind_test = list(map(int, valencia_wind_test))
+
+    wind_deg_test = pd.DataFrame({'Level': valencia_wind_test})
+    
+    seville_pressure_test = []
+    for i in feature_vector_df['Seville_pressure']:
+        value = i.split('p')[-1:]
+        seville_pressure_test = seville_pressure_test + value
+        seville_pressure_test = list(map(int, seville_pressure_test))
+
+    pressure_df_test = pd.DataFrame({'SP (Static Pressure)': seville_pressure_test})
+    
+    feature_vector_df['Valencia_wind_deg'] = wind_deg_test
+    feature_vector_df['Seville_pressure'] = pressure_df_test
+    feature_vector_df['Valencia_pressure'].fillna(1013.148351, inplace=True) #Manually added mean #Manually added mean
+    
+    predict_vector = feature_vector_df[['Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+       'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
+       'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
+       'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
+       'Madrid_clouds_all', 'Seville_wind_speed', 'Barcelona_rain_1h',
+       'Seville_pressure', 'Seville_rain_1h', 'Bilbao_snow_3h',
+       'Barcelona_pressure', 'Seville_rain_3h', 'Madrid_rain_1h',
+       'Barcelona_rain_3h', 'Valencia_snow_3h', 'Bilbao_pressure',
+       'Valencia_pressure', 'Seville_temp_max', 'Madrid_pressure',
+       'Valencia_temp_max', 'Valencia_temp', 'Seville_temp',
+       'Valencia_humidity', 'Valencia_temp_min', 'Barcelona_temp_max',
+       'Madrid_temp_max', 'Barcelona_temp', 'Bilbao_temp_min', 'Bilbao_temp',
+       'Barcelona_temp_min', 'Bilbao_temp_max', 'Seville_temp_min',
+       'Madrid_temp', 'Madrid_temp_min', 'Year', 'Month', 'Day', 'Hour']]
+
+    
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
+    
+    
 
     return predict_vector
 
