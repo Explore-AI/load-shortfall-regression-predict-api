@@ -62,7 +62,6 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    #predict_vector = feature_vector_df[['Valencia_pressure','Valencia_wind_deg','Seville_pressure']]
     #predict_vector = feature_vector_df
     #predict_vector['Valencia_pressure']=predict_vector['Valencia_pressure'].fillna(predict_vector['Valencia_pressure'].mode()[0])
     #predict_vector.select_dtypes(include=['object']).head(5)
@@ -76,28 +75,30 @@ def _preprocess_data(data):
 
     # ------------------------------------------------------------------------
     
-  
+    feature_vector_df.fillna(0, inplace = True)
+    predict_vector = feature_vector_df[['Madrid_temp', 'Barcelona_temp_min', 'Bilbao_pressure', 'Seville_temp', 'Valencia_wind_speed']]
+    return predict_vector
     #Extracting the numeric on our data but datatype still object
-    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
-    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    #feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+    #feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
 
     #converting object into numeric data type
-    feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df['Seville_pressure'])
-    feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+    #feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df['Seville_pressure'])
+    #feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
 
-    X = feature_vector_df.values
+    #X = feature_vector_df.values
     
 
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
-    X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
+    #scaler = StandardScaler()
+    #X_scaled = scaler.fit_transform(X)
+    #X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
+    #X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
   
 
     # feature_vector_df= feature_vector_df.drop(['Valencia_pressure'] , axis=1)
-    predict_vector = feature_vector_df
+    ##predict_vector = feature_vector_df
 
-    return feature_vector_df
+    #return feature_vector_df
 
     #return predict_vector
 
