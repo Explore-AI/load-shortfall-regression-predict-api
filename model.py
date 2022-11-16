@@ -26,8 +26,12 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+from matplotlib.pyplot import axis
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import *
 
 def _preprocess_data(data):
+    
     """Private helper function to preprocess data for model prediction.
 
     NB: If you have utilised feature engineering/selection in order to create
@@ -58,10 +62,45 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-    # ------------------------------------------------------------------------
+    #predict_vector = feature_vector_df
+    #predict_vector['Valencia_pressure']=predict_vector['Valencia_pressure'].fillna(predict_vector['Valencia_pressure'].mode()[0])
+    #predict_vector.select_dtypes(include=['object']).head(5)
+    #predict_vector['time'] = pd.to_datetime(predict_vector['time'])
+    #predict_vector['time'].info()
+    #predict_vector['Valencia_wind_deg'] =predict_vector['Valencia_wind_deg'].str.extract('(\d+)')
+    #predict_vector['Valencia_wind_deg'] = pd.to_numeric(predict_vector['Valencia_wind_deg'])
+    #predict_vector['Valencia_wind_deg'].head(5)
+    #predict_vector['Seville_pressure'] = predict_vector['Seville_pressure'].str.extract('(\d+)')
+    #predict_vector['Seville_pressure'] = pd.to_numeric(predict_vector['Seville_pressure'])
 
+    # ------------------------------------------------------------------------
+    
+    feature_vector_df.fillna(0, inplace = True)
+    predict_vector = feature_vector_df[['Madrid_temp', 'Barcelona_temp_min', 'Bilbao_pressure', 'Seville_temp', 'Valencia_wind_speed']]
     return predict_vector
+    #Extracting the numeric on our data but datatype still object
+    #feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+    #feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+
+    #converting object into numeric data type
+    #feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df['Seville_pressure'])
+    #feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+
+    #X = feature_vector_df.values
+    
+
+    #scaler = StandardScaler()
+    #X_scaled = scaler.fit_transform(X)
+    #X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
+    #X_standardise = pd.DataFrame(X_scaled, columns=X.columns)
+  
+
+    # feature_vector_df= feature_vector_df.drop(['Valencia_pressure'] , axis=1)
+    ##predict_vector = feature_vector_df
+
+    #return feature_vector_df
+
+    #return predict_vector
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
