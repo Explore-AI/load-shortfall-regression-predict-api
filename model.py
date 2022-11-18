@@ -26,8 +26,12 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+from matplotlib.pyplot import axis
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import *
 
 def _preprocess_data(data):
+    
     """Private helper function to preprocess data for model prediction.
 
     NB: If you have utilised feature engineering/selection in order to create
@@ -58,10 +62,14 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-    # ------------------------------------------------------------------------
+   
 
+  
+    
+    feature_vector_df.fillna(0, inplace = True)
+    predict_vector = feature_vector_df[['Madrid_temp', 'Barcelona_temp_min', 'Bilbao_pressure', 'Seville_temp', 'Valencia_wind_speed']]
     return predict_vector
+  # ------------------------------------------------------------------------
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
