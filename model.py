@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+from datetime import datetime, timedelta
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
@@ -49,16 +50,52 @@ def _preprocess_data(data):
     # Load the dictionary as a Pandas DataFrame.
     feature_vector_df = pd.DataFrame.from_dict([feature_vector_dict])
 
-    # ---------------------------------------------------------------
-    # NOTE: You will need to swap the lines below for your own data
-    # preprocessing methods.
-    #
-    # The code below is for demonstration purposes only. You will not
-    # receive marks for submitting this code in an unchanged state.
-    # ---------------------------------------------------------------
+    feature_vector_df['time'] = pd.to_datetime(feature_vector_df['time'])
 
-    # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    # day
+    feature_vector_df['day'] = feature_vector_df['time'].dt.day
+    # month
+    feature_vector_df['month'] = feature_vector_df['time'].dt.month
+    # year
+    feature_vector_df['year'] = feature_vector_df['time'].dt.year
+    # hour
+    feature_vector_df['hour'] = feature_vector_df['time'].dt.hour
+    # minute
+    feature_vector_df['minute'] = feature_vector_df['time'].dt.minute
+    # second
+    feature_vector_df['second'] = feature_vector_df['time'].dt.second
+
+
+
+    feature_vector_df = feature_vector_df.loc[:, ['time','day', 'month', 'year', 'hour', 'minute',
+       'second', 'Madrid_wind_speed', 'Valencia_wind_deg', 'Bilbao_rain_1h',
+       'Valencia_wind_speed', 'Seville_humidity', 'Madrid_humidity',
+       'Bilbao_clouds_all', 'Bilbao_wind_speed', 'Seville_clouds_all',
+       'Bilbao_wind_deg', 'Barcelona_wind_speed', 'Barcelona_wind_deg',
+       'Madrid_clouds_all', 'Seville_wind_speed', 'Barcelona_rain_1h',
+       'Seville_pressure', 'Seville_rain_1h', 'Bilbao_snow_3h',
+       'Barcelona_pressure', 'Seville_rain_3h', 'Madrid_rain_1h',
+       'Barcelona_rain_3h', 'Valencia_snow_3h', 'Madrid_weather_id',
+       'Barcelona_weather_id', 'Bilbao_pressure', 'Seville_weather_id',
+       'Valencia_pressure', 'Seville_temp_max', 'Madrid_pressure',
+       'Valencia_temp_max', 'Valencia_temp', 'Bilbao_weather_id',
+       'Seville_temp', 'Valencia_humidity', 'Valencia_temp_min',
+       'Barcelona_temp_max', 'Madrid_temp_max', 'Barcelona_temp',
+       'Bilbao_temp_min', 'Bilbao_temp', 'Barcelona_temp_min',
+       'Bilbao_temp_max', 'Seville_temp_min', 'Madrid_temp', 'Madrid_temp_min']]
+    # #    ,'load_shortfall_3h']]
+
+    feature_vector_df= feature_vector_df.drop(['time'], axis = 1) 
+    feature_vector_df['Valencia_wind_deg'] = feature_vector_df['Valencia_wind_deg'].str.extract('(\d+)')
+    feature_vector_df['Valencia_wind_deg'] = pd.to_numeric(feature_vector_df['Valencia_wind_deg'])
+
+    feature_vector_df['Seville_pressure'] = feature_vector_df['Seville_pressure'].str.extract('(\d+)')
+    feature_vector_df['Seville_pressure'] = pd.to_numeric(feature_vector_df['Seville_pressure'])
+
+    feature_vector_df['Valencia_pressure'] = feature_vector_df['Valencia_pressure'].fillna(1015.0)
+    # # ----------- Replace this code with your own preprocessing steps --------
+    predict_vector = feature_vector_df.copy()
+    # predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
     return predict_vector
@@ -104,7 +141,13 @@ def make_prediction(data, model):
     """
     # Data preprocessing.
     prep_data = _preprocess_data(data)
+    
+    
     # Perform prediction with model and preprocessed data.
     prediction = model.predict(prep_data)
+    
+    print(prediction)
+    
+    
     # Format as list for output standardisation.
     return prediction[0].tolist()
