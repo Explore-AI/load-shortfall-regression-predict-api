@@ -49,7 +49,11 @@ api_response = requests.post(url, json=feature_vector_json)
 
 # Display the prediction result
 print("Received POST response:")
-print("*"*50)
-print(f"API prediction result: {api_response.json()[0]}")
+print("*" * 50)
+prediction_result = api_response.json()
+if isinstance(prediction_result, float):
+    print(f"API prediction result: {prediction_result}")
+else:
+    print(f"API prediction result: {prediction_result[0]}")
 print(f"The response took: {api_response.elapsed.total_seconds()} seconds")
-print("*"*50)
+print("*" * 50)
