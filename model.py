@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
-from sklearn.preprocessing import StandardScaler
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
@@ -59,69 +58,7 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-
-    # this fundction will remove the unnamed column, Seville pressure and Valencia_wind_deg
-    def drop_cols(data):
-        #drop all id cols
-        data = data.drop([col for col in data if 'id' in col], axis ='columns')
-
-        #drop the unnamed col in both 
-        data = data.drop(['Unnamed: 0'],axis=1)
-
-        #drop cols with large missing values
-        data = data.drop(['Seville_pressure','Valencia_wind_deg'],axis='columns')
-        
-        return data
-    
-    #The findction below with, generate new time features month, day,time. Also it will average similiar feature like wind,pressure,temperature,
-    #snow and wind to create new features. The rest of the other features will be dropped.
-    def new_features(data):
-        
-        #code the time col
-        time =  pd.to_datetime(data['time'])
-        data['time'] = time
-
-        data['Day'] = data['time'].dt.day
-        data['month'] = data['time'].dt.month
-        data['hour'] = data['time'].dt.hour
-
-        
-        similar_list = ['temp','pressure','rain','wind','snow','cloud']
-        
-        for se in similar_list:
-            temp_features = [col for col in data.columns.tolist() if se in col]
-            data['av_spain_'+se] = data[temp_features].mean(axis=1)
-            data = data.drop(temp_features, axis='columns')
-        
-        #drop time col
-        data = data.drop(['time'],axis='columns')
-
-        return data
-    
-    #the function below will scale our data between -1 and 1, with a mean of 0.
-    def scale_data(data):
-    
-        scaler = StandardScaler()
-        cols = data.columns.tolist()
-        
-        #scale data
-        X_scaled = scaler.fit_transform(data)
-
-        X_standardise = pd.DataFrame(X_scaled,columns=cols)
-
-        #after normalizing, we can fill nan with zero
-        X_standardise.fillna(0)
-        
-        return X_standardise
-    
-    #call the drop function
-    predict_vector = drop_cols(feature_vector_df)
-    #col the feature engineering function
-    predict_vector = new_features(predict_vector)
-    #call the standaedization function
-    predict_vector = scale_data(predict_vector)
-
+    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
     return predict_vector
