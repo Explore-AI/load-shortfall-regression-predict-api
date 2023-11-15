@@ -58,8 +58,59 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-    # ------------------------------------------------------------------------
+    # modifying missing values/ features, replacing null values in Valencia_Pressure with the mode
+    # Create a copy of the DataFrame to avoid modifying the original DataFrame
+    df_clean= df_train.copy()
+
+    # Calculate the median for the 'Valencia_pressure' column
+    median_value = df_clean['Valencia_pressure'].median()
+
+    # Replace null values in 'Valencia_pressure' with the median value
+    df_clean['Valencia_pressure'].fillna(median_value, inplace=True)
+
+    # create new features
+    df_clean['time'] = pd.to_datetime(df_clean['time'])
+
+
+    # Extract year, month, day from 'Date'
+    df_clean['Year'] = df_clean['time'].dt.year
+    df_clean['Month'] = df_clean['time'].dt.month
+
+    # -----------------------------------------------------------------------
+
+    #Valencia_wind_deg
+    #Extract numerical values as strings from 
+    df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)')
+
+    # Convert the extracted column from string to float
+    df_clean['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].astype(float)
+
+    #Seville_pressure
+    #Extract numerical values as strings from 
+    df_clean['Seville_pressure'] = df_clean['Seville_pressure'].str.extract('(\d+)')
+
+    # Convert the extracted column from string to float
+    df_clean['Seville_pressure'] = df_clean['Seville_pressure'].astype(float)
+
+    #Removing features
+    df_clean = df_clean.drop(['Unnamed: 0'], axis=1)
+    df_clean = df_clean.drop(['time'], axis=1)
+    df_clean = df_clean.drop(['Bilbao_weather_id'], axis=1)
+    df_clean = df_clean.drop(['Madrid_weather_id'], axis=1)
+    df_clean = df_clean.drop(['Barcelona_weather_id'], axis=1)
+    df_clean = df_clean.drop(['Seville_weather_id'], axis=1)
+
+    #Moving y to end of dataframe 
+    columns = df_clean.columns.tolist()
+
+    # Remove the 'load_shortfall_3h' column from the list
+    columns.remove('load_shortfall_3h')
+
+    # Add it to the end of the list
+    columns.append('load_shortfall_3h')
+
+    # Reorder the DataFrame with the new column order
+    df_clean = df_clean[columns]
 
     return predict_vector
 

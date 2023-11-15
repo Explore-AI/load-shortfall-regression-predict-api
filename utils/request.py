@@ -37,7 +37,7 @@ feature_vector_json = test.iloc[1].to_json()
 # replace the URL below with its public IP:
 
 # url = 'http://{public-ip-address-of-remote-machine}:5000/api_v0.1'
-url = 'http://127.0.0.1:5000/api_v0.1'
+url = 'http://3.249.167.144:5000/api_v0.1'
 
 # Perform the POST request.
 print(f"Sending POST request to web server API at: {url}")
@@ -50,6 +50,6 @@ api_response = requests.post(url, json=feature_vector_json)
 # Display the prediction result
 print("Received POST response:")
 print("*"*50)
-print(f"API prediction result: {api_response.json()[0]}")
+print(f"API prediction result: {api_response.json()}")
 print(f"The response took: {api_response.elapsed.total_seconds()} seconds")
 print("*"*50)
