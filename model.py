@@ -61,8 +61,7 @@ def _preprocess_data(data):
     # ----------- Replace this code with your own preprocessing steps --------
     #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
 
-    # this fundction will remove the unnamed column, Seville pressure and Valencia_wind_deg
-    def drop_cols(data):
+    def feature_engineering(data):
         #drop all id cols
         data = data.drop([col for col in data if 'id' in col], axis ='columns')
 
@@ -72,13 +71,7 @@ def _preprocess_data(data):
         #drop cols with large missing values
         data = data.drop(['Seville_pressure','Valencia_wind_deg'],axis='columns')
         
-        return data
-    
-    #The findction below with, generate new time features month, day,time. Also it will average similiar feature like wind,pressure,temperature,
-    #snow and wind to create new features. The rest of the other features will be dropped.
-    def new_features(data):
-        
-        #code the time col
+            #code the time col
         time =  pd.to_datetime(data['time'])
         data['time'] = time
 
@@ -96,12 +89,9 @@ def _preprocess_data(data):
         
         #drop time col
         data = data.drop(['time'],axis='columns')
-
-        return data
-    
-    #the function below will scale our data between -1 and 1, with a mean of 0.
-    def scale_data(data):
-    
+        
+        
+        #scale data
         scaler = StandardScaler()
         cols = data.columns.tolist()
         
@@ -111,20 +101,12 @@ def _preprocess_data(data):
         X_standardise = pd.DataFrame(X_scaled,columns=cols)
 
         #after normalizing, we can fill nan with zero
-        X_standardise.fillna(0)
+        X_standardise = X_standardise.fillna(0)
         
         return X_standardise
-    
-    #call the drop function
-    predict_vector = drop_cols(feature_vector_df)
-    #col the feature engineering function
-    predict_vector = new_features(predict_vector)
-    #call the standaedization function
-    predict_vector = scale_data(predict_vector)
-
     # ------------------------------------------------------------------------
 
-    return predict_vector
+    return feature_engineering(feature_vector_df)
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
