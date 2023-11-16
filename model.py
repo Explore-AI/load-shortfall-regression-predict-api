@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import json
+from sklearn.preprocessing import StandardScaler
 
 def _preprocess_data(data):
     """Private helper function to preprocess data for model prediction.
@@ -58,10 +59,54 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+
+    def feature_engineering(data):
+        #drop all id cols
+        data = data.drop([col for col in data if 'id' in col], axis ='columns')
+
+        #drop the unnamed col in both 
+        data = data.drop(['Unnamed: 0'],axis=1)
+
+        #drop cols with large missing values
+        data = data.drop(['Seville_pressure','Valencia_wind_deg'],axis='columns')
+        
+            #code the time col
+        time =  pd.to_datetime(data['time'])
+        data['time'] = time
+
+        data['Day'] = data['time'].dt.day
+        data['month'] = data['time'].dt.month
+        data['hour'] = data['time'].dt.hour
+
+        
+        similar_list = ['temp','pressure','rain','wind','snow','cloud']
+        
+        for se in similar_list:
+            temp_features = [col for col in data.columns.tolist() if se in col]
+            data['av_spain_'+se] = data[temp_features].mean(axis=1)
+            data = data.drop(temp_features, axis='columns')
+        
+        #drop time col
+        data = data.drop(['time'],axis='columns')
+        
+        
+        #scale data
+        scaler = StandardScaler()
+        cols = data.columns.tolist()
+        
+        #scale data
+        X_scaled = scaler.fit_transform(data)
+
+        X_standardise = pd.DataFrame(X_scaled,columns=cols)
+
+        #after normalizing, we can fill nan with zero
+        X_standardise = X_standardise.fillna(0)
+        
+        return X_standardise
     # ------------------------------------------------------------------------
 
-    return predict_vector
+    return feature_engineering(feature_vector_df)
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
