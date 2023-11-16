@@ -50,6 +50,12 @@ api_response = requests.post(url, json=feature_vector_json)
 # Display the prediction result
 print("Received POST response:")
 print("*"*50)
-print(f"API prediction result: {api_response.json()}")
+print(f"API response content: {api_response.text}")
+try:
+    api_data = api_response.json()
+    print(f"API prediction result: {api_data}")
+except json.decoder.JSONDecodeError as e:
+    print(f"Error decoding JSON: {e}
+print(f"API prediction result: {api_response.json()}")        
 print(f"The response took: {api_response.elapsed.total_seconds()} seconds")
 print("*"*50)
