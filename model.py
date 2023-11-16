@@ -58,7 +58,17 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
+    predict_vector = feature_vector_df[['Valencia_pressure','time','Valencia_wind_deg','Seville_pressure','Unnamed: 0']]
+    predict_vector['Valencia_wind_speed'].fillna(predict_vector['Valencia_wind_speed'].median(), inplace=True)
+    predict_vector['Valencia_wind_deg'] = df_clean['Valencia_wind_deg'].str.extract('(\d+)')
+    predict_vector['Valencia_wind_deg'] = predict_vector['Valencia_wind_deg'].astype(float)
+    predict_vector['Seville_pressure'] = df_clean['Seville_pressure'].str.extract('(\d+)')
+    predict_vector['Seville_pressure'] = predict_vector['Seville_pressure'].astype(float)
+    predict_vector['time'] = pd.to_datetime(predict_vector['time'])
+    predict_vector['Year'] = predict_vector['time'].dt.year
+    predict_vector['Month'] = predict_vector['time'].dt.month
+    predict_vector = predict_vector.drop(['Unnamed: 0'], axis=1)
+    predict_vector = predict_vector.drop(['time'], axis=1)
     # ------------------------------------------------------------------------
 
     return predict_vector
