@@ -34,7 +34,7 @@ def _preprocess_data(data):
     NB: If you have utilised feature engineering/selection in order to create
     your final model you will need to define the code here.
 
-
+    
     Parameters
     ----------
     data : str
@@ -45,6 +45,50 @@ def _preprocess_data(data):
     Pandas DataFrame : <class 'pandas.core.frame.DataFrame'>
         The preprocessed data, ready to be used our model for prediction.
     """
+    data = data.drop(['Unnamed: 0'],axis=1) #remove the unnamed col
+    data = data.drop([col for col in data if 'id' in col], axis ='columns')
+    data = data.drop(['Seville_pressure','Valencia_wind_deg'],axis='columns')
+
+    #create new features
+    temp_features = [col for col in data if 'temp' in col and 'av_spain_temp' not in col]
+    data['av_spain_temp'] = data[temp_features].mean(axis=1)
+    data = data.drop(temp_features, axis='columns')
+
+    pressure_features = [col for col in data if 'pressure' in col and 'av_spain_pressure' not in col]
+    data['av_spain_pressure'] = data[pressure_features].mean(axis=1)
+    data = data.drop(pressure_features, axis='columns')
+
+    rain_features = [col for col in data if 'rain' in col and 'av_spain_rain' not in col]
+    data['av_spain_rain'] = data[rain_features].mean(axis=1)
+    data = data.drop(rain_features, axis='columns')
+
+    wind_features = [col for col in data if 'wind' in col and 'av_spain_wind' not in col]
+    data['av_spain_wind'] = data[wind_features].mean(axis=1)
+    data = data.drop(wind_features, axis='columns')
+
+    snow_features = [col for col in data if 'snow' in col and 'av_spain_snow' not in col]
+    data['av_spain_snow'] = data[snow_features].mean(axis=1)
+    data = data.drop(snow_features, axis='columns')
+
+    clouds_features = [col for col in data if 'cloud' in col and 'av_spain_clouds' not in col]
+    data['av_spain_clouds'] = data[clouds_features].mean(axis=1)
+    data = data.drop(clouds_features, axis='columns')
+
+    time =  pd.to_datetime(data['time'])
+    data['time'] = time
+    data['Day'] = data['time'].dt.day
+    data['month'] = data['time'].dt.month
+    data['hour'] = data['time'].dt.hour
+    data = data.drop('time', axis='columns')
+
+    # create scaler object
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(data)
+    data = pd.DataFrame(X_scaled,columns=data.columns)
+    #after normalizing, we can fill nan with zero
+    data.fillna(0)
+
+
     # Convert the json string to a python dictionary object
     feature_vector_dict = json.loads(data)
     # Load the dictionary as a Pandas DataFrame.
@@ -59,54 +103,10 @@ def _preprocess_data(data):
     # ---------------------------------------------------------------
 
     # ----------- Replace this code with your own preprocessing steps --------
-    #predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
-
-    def feature_engineering(data):
-        #drop all id cols
-        data = data.drop([col for col in data if 'id' in col], axis ='columns')
-
-        #drop the unnamed col in both 
-        data = data.drop(['Unnamed: 0'],axis=1)
-
-        #drop cols with large missing values
-        data = data.drop(['Seville_pressure','Valencia_wind_deg'],axis='columns')
-        
-            #code the time col
-        time =  pd.to_datetime(data['time'])
-        data['time'] = time
-
-        data['Day'] = data['time'].dt.day
-        data['month'] = data['time'].dt.month
-        data['hour'] = data['time'].dt.hour
-
-        
-        similar_list = ['temp','pressure','rain','wind','snow','cloud']
-        
-        for se in similar_list:
-            temp_features = [col for col in data.columns.tolist() if se in col]
-            data['av_spain_'+se] = data[temp_features].mean(axis=1)
-            data = data.drop(temp_features, axis='columns')
-        
-        #drop time col
-        data = data.drop(['time'],axis='columns')
-        
-        
-        #scale data
-        scaler = StandardScaler()
-        cols = data.columns.tolist()
-        
-        #scale data
-        X_scaled = scaler.fit_transform(data)
-
-        X_standardise = pd.DataFrame(X_scaled,columns=cols)
-
-        #after normalizing, we can fill nan with zero
-        X_standardise = X_standardise.fillna(0)
-        
-        return X_standardise
+    predict_vector = feature_vector_df[['Madrid_wind_speed','Bilbao_rain_1h','Valencia_wind_speed']]
     # ------------------------------------------------------------------------
 
-    return feature_engineering(feature_vector_df)
+    return predict_vector
 
 def load_model(path_to_model:str):
     """Adapter function to load our pretrained model into memory.
